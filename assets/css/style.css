@@ -13,3 +13,18 @@
     border: 1px solid silver;
     height: 33vh;
   }
+
+img {
+    height: 100px;
+    width: 100px;
+    background: silver;
+    border: 1px solid black;
+}
+
+.enemy {
+    background: rgb(113, 5, 5);
+}
+
+.player {
+    background: rgb(5, 5, 113);
+}

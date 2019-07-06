@@ -8,10 +8,13 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='assets/css/reset.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='assets/css/style.css'>
-    <script src='assets/javascript/game.js'></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src='assets/javascript/game.js'>
+    </script>
 </head>
 
-<body>
+<body onload="new game()">
     <div class="grid-container">
         <!-- Title -->
         <div class="grid-item-head"></div>
@@ -21,13 +24,13 @@
         <div class="grid-item-head"></div>
         <!-- Selected battler -->
         <div class="grid-item-main"></div>
-        <div class="grid-item-main">
+        <div class="grid-item-main" id="playerDiv">
             <p>Pick a player</p>
         </div>
         <div class="grid-item-main"></div>
         <!-- Remaining enemies -->
         <div class="grid-item-main"></div>
-        <div class="grid-item-main">
+        <div class="grid-item-main" id="enemyDiv">
             <p>Here's who you'll be battling!</p>
         </div>
         <div class="grid-item-main"></div>
