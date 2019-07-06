@@ -1,0 +1,15 @@
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+
+.grid-item-head, .grid-item-bottom {
+    border: 1px solid silver;
+    height: 16.5vh;
+  }
+
+.grid-item-main  {
+    border: 1px solid silver;
+    height: 33vh;
+  }
