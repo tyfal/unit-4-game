@@ -6,17 +6,10 @@ class character {
         this.health = 100;
         this.attack = 20;
         this.counterAttack = 20;
+        this.id = name.replace(" ", "-");
         this.imgUrl = img;
-        this.imgElement = $("<img src='"+img+"' id='"+this.name.replace(" ","-")+"'>");
-        this.player = false;
-
+        this.imgElement = $("<img src='" + img + "' id='" + this.id + "'>");
     }
-
-    // setPlayer - change player status to true
-    setPlayer() {
-        this.player = true;
-    }
-
 
     // attack - increase incrementally with each pass
     attack() {
@@ -49,22 +42,28 @@ class battle {
         var enemyDiv = $("#enemyDiv");
 
         playerDiv.empty();
+        enemyDiv.empty();
 
-        for (var i=0; i<arguments.length; i++) {
+        enemyDiv.append("<p>Decide whom you'll battle first. Be wary...");
+
+        for (var i = 0; i < arguments.length; i++) {
 
             var char = arguments[i];
 
-            if (char.player) {
+            console.log(char.imgElement.attr("class"));
+
+            if (char.imgElement.hasClass("player")) {
                 playerDiv.append(char.imgElement);
-                char.imgElement.attr("class", "player");
             }
 
             else {
                 enemyDiv.append(char.imgElement);
-                char.imgElement.attr("class", "enemy");
+
             }
 
         }
+
+
 
     }
 
@@ -82,7 +81,7 @@ class game {
 
         var playerDiv = $("#playerDiv");
         var enemyDiv = $("#enemyDiv");
-        
+
         var vader = new character("Darth Vader", "assets/images/vader.png");
         var trooper = new character("Storm Trooper", "assets/images/trooper.png");
         var anakin = new character("Anakin Skywalker", "assets/images/anakin.png");
@@ -90,28 +89,19 @@ class game {
 
         var cList = [vader, trooper, anakin, rey];
 
-        for (var i=0; i<cList.length; i++) {
+        for (var i = 0; i < cList.length; i++) {
             var char = cList[i];
+            char.imgElement.addClass("character");
             playerDiv.append(char.imgElement);
         }
 
-        vader.imgElement.on("click", function() {
-            vader.setPlayer();
-            new battle(vader, trooper, anakin, rey);
-        });
-
-        trooper.imgElement.on("click", function() {
-            trooper.setPlayer();
-            new battle(vader, trooper, anakin, rey);
-        });
-
-        anakin.imgElement.on("click", function() {
-            anakin.setPlayer();
-            new battle(vader, trooper, anakin, rey);
-        });
-
-        rey.imgElement.on("click", function() {
-            rey.setPlayer();
+        $(".character").on("click", function () {
+            $(this).addClass("player");
+            for (var i = 0; i < 4; i++) {
+                if (!(cList[i].imgElement.hasClass("player"))) {
+                    cList[i].imgElement.addClass("enemy");
+                }
+            }
             new battle(vader, trooper, anakin, rey);
         });
 
