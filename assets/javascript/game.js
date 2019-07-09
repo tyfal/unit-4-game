@@ -8,6 +8,7 @@ class character {
         this.id = name.replace(" ", "-");
         this.imgUrl = img;
         this.imgElement = $("<img src='" + img + "' id='" + this.id + "'>");
+        this.victoryCount = 0;
     }
 
 }
@@ -76,9 +77,10 @@ class game {
             }
 
         }
-
+        
         for (var i = 0; i < enemies.length; i++) {
             this.faceoff(player, enemies[i]);
+
         }
 
     }
@@ -101,14 +103,19 @@ class game {
             playerDiv.append("<h3 id='vs'>vs.</h3>", _enemy.imgElement, "<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>", attackBtn);
 
             attackBtn.on("click", function () {
-                
+
                 _enemy.health -= _player.attack;
+
+                _player.health -= _enemy.attack;
                 
                 _player.attack = Math.round(_player.attack * 1.5);
 
                 $("#playerInfo").html("<ul id='playerInfo'><li>Health: " + _player.health + "</li><li id='playerAttack'>Attack: " + _player.attack + "</li></ul>");
                 $("#enemyInfo").html("<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>");
+                
                 if (_enemy.health <= 0) {
+                    _player.victoryCount ++;
+                    console.log(_player.victoryCount);
                     $("#enemyInfo").remove();
                     $("#playerInfo").remove();
                     $("#vs").remove();
@@ -117,14 +124,14 @@ class game {
                     $("#" + _enemy.id).css('background', 'rgb(51, 2, 2)');
                     $("#" + _enemy.id).off("click");
                     enemyDiv.append(_enemy.imgElement);
+                    if (_player.victoryCount === 3) $("h1").text("You won!!!");
                 }
+
                 if (_player.health <= 0) {
                     $("#" + _player.id).css('opacity', '0.5');
                     $("#" + _player.id).css('background', 'rgb(2, 2, 51)');
-                    $("h1").text("You lost!!!")
+                    $("h1").text("You lost d[-_-]b");
                 }
-
-                _player.health -= _enemy.attack;
 
             });
 
@@ -139,12 +146,12 @@ class game {
         if (enemy.name === "Darth Vader" && player.name === "Anakin Skywalker" ||
             enemy.name === "Storm Trooper" && player.name === "Darth Vader" ||
             enemy.name === "Rey" && player.name === "Storm Trooper" ||
-            enemy.name === "Anakin Skywalker" && player.name === "Rey") attackVal = 60;
+            enemy.name === "Anakin Skywalker" && player.name === "Rey") attackVal = 30;
 
         if (enemy.name === "Darth Vader" && player.name === "Rey" ||
             enemy.name === "Storm Trooper" && player.name === "Anakin Skywalker" ||
             enemy.name === "Rey" && player.name === "Darth Vader" ||
-            enemy.name === "Anakin Skywalker" && player.name === "Storm Trooper") attackVal *= 3;
+            enemy.name === "Anakin Skywalker" && player.name === "Storm Trooper") attackVal = 15;
 
         return attackVal;
 
