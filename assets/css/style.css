@@ -1,5 +1,19 @@
+* {
+  color: rgb(199, 186, 7);
+  text-shadow: 2px 2px #121213;
+}
+
+body {
+  background-image: url("../images/background.png");
+  background-color: #121213;
+}
+
 h1 {
   font-size: 60px;
+}
+
+p {
+  font-size: 25px;
 }
 
 .grid-container {
@@ -8,12 +22,10 @@ h1 {
   }
 
 .grid-item-head, .grid-item-bottom {
-    border: 1px solid silver;
     height: 16.5vh;
   }
 
 .grid-item-main  {
-    border: 1px solid silver;
     height: 33vh;
   }
 
@@ -32,6 +44,15 @@ img {
 .enemy {
     background: rgb(113, 5, 5);
 }
+
+button {
+  background: black;
+}
+
+#enemyDiv {
+  padding-top: 30px;
+}
+
 #playerDiv h3 {
   margin: 5px;
   font-size: 25px;
