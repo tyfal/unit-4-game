@@ -97,39 +97,56 @@ class game {
 
         enemy.imgElement.on("click", function () {
 
-            var playerDiv = $("#playerDiv");
-            var enemyDiv = $("#enemyDiv");
-            var attackBtn = $("<button id='attackBtn'>Attack</button>");
+            if ($("#playerDiv > img").length === 1) {
 
-            _enemy.attack = _self.setAdvantage(_player, _enemy);
-
-            playerDiv.prepend("<ul id='playerInfo'><li>Health: " + _player.health + "</li><li id='playerAttack'>Attack: " + _player.attack + "</li></ul>");
-            playerDiv.append("<h3 id='vs'>vs.</h3>", _enemy.imgElement, "<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>", attackBtn);
-
-            attackBtn.on("click", function () {
-
-                _enemy.health -= _player.attack;
-
-                _player.health -= _enemy.attack;
-
-                _player.attack = Math.round(_player.attack * 1.5);
-
-                $("#playerInfo").html("<ul id='playerInfo'><li>Health: " + _player.health + "</li><li id='playerAttack'>Attack: " + _player.attack + "</li></ul>");
-                $("#enemyInfo").html("<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>");
-
-                if (_enemy.health <= 0) {
-                    _player.victoryCount++;
-                    console.log(_player.victoryCount);
-                    $("#enemyInfo").remove();
-                    $("#playerInfo").remove();
-                    $("#vs").remove();
-                    $('#attackBtn').remove();
-                    $("#" + _enemy.id).css('opacity', '0.5');
-                    $("#" + _enemy.id).css('background', 'rgb(51, 2, 2)');
-                    $("#" + _enemy.id).off("click");
-                    enemyDiv.append(_enemy.imgElement);
-                    if (_player.victoryCount === 3) {
-                        $("h1").text("You won!!!");
+                var playerDiv = $("#playerDiv");
+                var enemyDiv = $("#enemyDiv");
+                var attackBtn = $("<button id='attackBtn'>Attack</button>");
+    
+                _enemy.attack = _self.setAdvantage(_player, _enemy);
+    
+                playerDiv.prepend("<ul id='playerInfo'><li>Health: " + _player.health + "</li><li id='playerAttack'>Attack: " + _player.attack + "</li></ul>");
+                playerDiv.append("<h3 id='vs'>vs.</h3>", _enemy.imgElement, "<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>", attackBtn);
+    
+                attackBtn.on("click", function () {
+    
+                    _enemy.health -= _player.attack;
+    
+                    _player.health -= _enemy.attack;
+    
+                    _player.attack = Math.round(_player.attack * 1.5);
+    
+                    $("#playerInfo").html("<ul id='playerInfo'><li>Health: " + _player.health + "</li><li id='playerAttack'>Attack: " + _player.attack + "</li></ul>");
+                    $("#enemyInfo").html("<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>");
+    
+                    if (_enemy.health <= 0) {
+                        _player.victoryCount++;
+                        console.log(_player.victoryCount);
+                        $("#enemyInfo").remove();
+                        $("#playerInfo").remove();
+                        $("#vs").remove();
+                        $('#attackBtn').remove();
+                        $("#" + _enemy.id).css('opacity', '0.5');
+                        $("#" + _enemy.id).css('background', 'rgb(51, 2, 2)');
+                        $("#" + _enemy.id).off("click");
+                        enemyDiv.append(_enemy.imgElement);
+                        if (_player.victoryCount === 3) {
+                            $("h1").text("You won!!!");
+                            setTimeout(function () {
+                                if (confirm("Play again?")) {
+                                    $("#playerDiv").empty();
+                                    $("#enemyDiv").empty();
+                                    new game();
+                                }
+                            }, 2000);
+    
+                        }
+                    }
+    
+                    if (_player.health <= 0) {
+                        $("#" + _player.id).css('opacity', '0.5');
+                        $("#" + _player.id).css('background', 'rgb(2, 2, 51)');
+                        $("h1").text("You lost d[-_-]b");
                         setTimeout(function () {
                             if (confirm("Play again?")) {
                                 $("#playerDiv").empty();
@@ -137,24 +154,11 @@ class game {
                                 new game();
                             }
                         }, 2000);
-
                     }
-                }
+    
+                });
 
-                if (_player.health <= 0) {
-                    $("#" + _player.id).css('opacity', '0.5');
-                    $("#" + _player.id).css('background', 'rgb(2, 2, 51)');
-                    $("h1").text("You lost d[-_-]b");
-                    setTimeout(function () {
-                        if (confirm("Play again?")) {
-                            $("#playerDiv").empty();
-                            $("#enemyDiv").empty();
-                            new game();
-                        }
-                    }, 2000);
-                }
-
-            });
+            }
 
         });
 
