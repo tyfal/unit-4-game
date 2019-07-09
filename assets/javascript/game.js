@@ -123,19 +123,26 @@ class game {
             var playerDiv = $("#playerDiv");
             var enemyDiv = $("#enemyDiv");
             var attackBtn = $("<button id='attackBtn'>Attack</button>");
-    
-            playerDiv.prepend("<ul><li>Health: "+_player.health+"</li><li>Attack: "+ _player.attack+"</li></ul>");
-            playerDiv.append("<h3>vs.</h3>",_enemy.imgElement,"<ul><li>Health: "+_enemy.health+"</li><li>Attack: "+_enemy.attack+"</li></ul>",attackBtn);
-
-            // while (enemy.health > 0) {
-
-            //     attackBtn.on("click", function() {
-
-            //         _enemy.health -= _player.attack;
-
-            //     });
-
-            // }         
+            
+            playerDiv.prepend("<ul id='playerInfo'><li>Health: "+_player.health+"</li><li>Attack: "+ _player.attack+"</li></ul>");
+            playerDiv.append("<h3 id='vs'>vs.</h3>",_enemy.imgElement,"<ul id='enemyInfo'><li id='enemyHealth'>Health: "+_enemy.health+"</li><li>Attack: "+_enemy.attack+"</li></ul>",attackBtn);
+            
+            attackBtn.on("click", function(){
+                _enemy.health -= _player.attack;
+                console.log(_enemy.name);
+                console.log(_enemy.health);
+                $("#enemyHealth").text("Health: "+_enemy.health);
+                if (_enemy.health <= 0) {
+                    $("#enemyInfo").remove();
+                    $("#playerInfo").remove();
+                    $("#vs").remove();
+                    $('#attackBtn').remove();
+                    $("#"+_enemy.id).css('opacity','0.9');
+                    $("#"+_enemy.id).css('background','rgb(51, 2, 2)');
+                    $("#"+_enemy.id).off("click");
+                    enemyDiv.append(_enemy.imgElement);
+                }
+            });     
 
         });
 
