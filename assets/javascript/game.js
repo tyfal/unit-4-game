@@ -4,29 +4,10 @@ class character {
     constructor(name, img) {
         this.name = name;
         this.health = 100;
-        this.attack = 10;
-        this.counterAttack = 20;
+        this.attack = 6;
         this.id = name.replace(" ", "-");
         this.imgUrl = img;
         this.imgElement = $("<img src='" + img + "' id='" + this.id + "'>");
-    }
-
-    // initiates battle when selected
-    enemyClick(player) {
-        var _self = this;
-        this.imgElement.on("click", function (player) {
-            $(this).appendTo("#playerDiv");
-            
-        })
-    }
-
-    // takeHit - decrease with each attack from opponent 
-    takeHit(enemyAttack) {
-
-        this.health -= enemyAttack;
-
-        return this.health;
-
     }
 
 }
@@ -76,7 +57,7 @@ class game {
         playerDiv.empty();
         enemyDiv.empty();
 
-        enemyDiv.append("<p>Decide whom to battle. Be wary...");
+        enemyDiv.append("<p>Decide whom to battle next. Be wary...");
 
         var enemies = [];
 
@@ -96,7 +77,7 @@ class game {
 
         }
 
-        for (var i = 0; i<enemies.length; i++) {
+        for (var i = 0; i < enemies.length; i++) {
             this.faceoff(player, enemies[i]);
         }
 
@@ -108,34 +89,64 @@ class game {
         var _enemy = enemy;
         var _player = player;
 
-        enemy.imgElement.on("click", function() {
+        enemy.imgElement.on("click", function () {
 
             var playerDiv = $("#playerDiv");
             var enemyDiv = $("#enemyDiv");
             var attackBtn = $("<button id='attackBtn'>Attack</button>");
-            
-            playerDiv.prepend("<ul id='playerInfo'><li>Health: "+_player.health+"</li><li>Attack: "+ _player.attack+"</li></ul>");
-            playerDiv.append("<h3 id='vs'>vs.</h3>",_enemy.imgElement,"<ul id='enemyInfo'><li id='enemyHealth'>Health: "+_enemy.health+"</li><li>Attack: "+_enemy.attack+"</li></ul>",attackBtn);
-            
-            attackBtn.on("click", function(){
+
+            _enemy.attack = _self.setAdvantage(_player, _enemy);
+
+            playerDiv.prepend("<ul id='playerInfo'><li>Health: " + _player.health + "</li><li id='playerAttack'>Attack: " + _player.attack + "</li></ul>");
+            playerDiv.append("<h3 id='vs'>vs.</h3>", _enemy.imgElement, "<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>", attackBtn);
+
+            attackBtn.on("click", function () {
+                
                 _enemy.health -= _player.attack;
-                _player.attack *= 1.5;
-                console.log(_enemy.name);
-                console.log(_enemy.health);
-                $("#enemyHealth").text("Health: "+_enemy.health);
+                
+                _player.attack = Math.round(_player.attack * 1.5);
+
+                $("#playerInfo").html("<ul id='playerInfo'><li>Health: " + _player.health + "</li><li id='playerAttack'>Attack: " + _player.attack + "</li></ul>");
+                $("#enemyInfo").html("<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>");
                 if (_enemy.health <= 0) {
                     $("#enemyInfo").remove();
                     $("#playerInfo").remove();
                     $("#vs").remove();
                     $('#attackBtn').remove();
-                    $("#"+_enemy.id).css('opacity','0.5');
-                    $("#"+_enemy.id).css('background','rgb(51, 2, 2)');
-                    $("#"+_enemy.id).off("click");
+                    $("#" + _enemy.id).css('opacity', '0.5');
+                    $("#" + _enemy.id).css('background', 'rgb(51, 2, 2)');
+                    $("#" + _enemy.id).off("click");
                     enemyDiv.append(_enemy.imgElement);
                 }
-            });     
+                if (_player.health <= 0) {
+                    $("#" + _player.id).css('opacity', '0.5');
+                    $("#" + _player.id).css('background', 'rgb(2, 2, 51)');
+                    $("h1").text("You lost!!!")
+                }
+
+                _player.health -= _enemy.attack;
+
+            });
 
         });
+
+    }
+
+    setAdvantage(player, enemy) {
+
+        var attackVal = 6
+
+        if (enemy.name === "Darth Vader" && player.name === "Anakin Skywalker" ||
+            enemy.name === "Storm Trooper" && player.name === "Darth Vader" ||
+            enemy.name === "Rey" && player.name === "Storm Trooper" ||
+            enemy.name === "Anakin Skywalker" && player.name === "Rey") attackVal = 60;
+
+        if (enemy.name === "Darth Vader" && player.name === "Rey" ||
+            enemy.name === "Storm Trooper" && player.name === "Anakin Skywalker" ||
+            enemy.name === "Rey" && player.name === "Darth Vader" ||
+            enemy.name === "Anakin Skywalker" && player.name === "Storm Trooper") attackVal *= 3;
+
+        return attackVal;
 
     }
 
