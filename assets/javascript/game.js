@@ -4,7 +4,7 @@ class character {
     constructor(name, img) {
         this.name = name;
         this.health = 100;
-        this.attack = 20;
+        this.attack = 10;
         this.counterAttack = 20;
         this.id = name.replace(" ", "-");
         this.imgUrl = img;
@@ -18,16 +18,6 @@ class character {
             $(this).appendTo("#playerDiv");
             
         })
-    }
-
-    // attack - increase incrementally with each pass
-    attack() {
-
-        if (player) {
-            this.attack *= 1.5;
-        }
-
-        return this.attack;
     }
 
     // takeHit - decrease with each attack from opponent 
@@ -86,7 +76,7 @@ class game {
         playerDiv.empty();
         enemyDiv.empty();
 
-        enemyDiv.append("<p>Decide whom you'll battle first. Be wary...");
+        enemyDiv.append("<p>Decide whom to battle. Be wary...");
 
         var enemies = [];
 
@@ -129,6 +119,7 @@ class game {
             
             attackBtn.on("click", function(){
                 _enemy.health -= _player.attack;
+                _player.attack *= 1.5;
                 console.log(_enemy.name);
                 console.log(_enemy.health);
                 $("#enemyHealth").text("Health: "+_enemy.health);
@@ -137,7 +128,7 @@ class game {
                     $("#playerInfo").remove();
                     $("#vs").remove();
                     $('#attackBtn').remove();
-                    $("#"+_enemy.id).css('opacity','0.9');
+                    $("#"+_enemy.id).css('opacity','0.5');
                     $("#"+_enemy.id).css('background','rgb(51, 2, 2)');
                     $("#"+_enemy.id).off("click");
                     enemyDiv.append(_enemy.imgElement);
