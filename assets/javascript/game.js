@@ -21,6 +21,10 @@ class game {
         var playerDiv = $("#playerDiv");
         var enemyDiv = $("#enemyDiv");
 
+        $("#centerHead").html("<h1>Time to battle!</h1>");
+        playerDiv.html("<p>Pick a player</p>");
+        enemyDiv.html("<p>You'll be battling the remaining characters!</p>")
+
         var vader = new character("Darth Vader", "assets/images/vader.png");
         var trooper = new character("Storm Trooper", "assets/images/trooper.png");
         var anakin = new character("Anakin Skywalker", "assets/images/anakin.png");
@@ -77,7 +81,7 @@ class game {
             }
 
         }
-        
+
         for (var i = 0; i < enemies.length; i++) {
             this.faceoff(player, enemies[i]);
 
@@ -107,14 +111,14 @@ class game {
                 _enemy.health -= _player.attack;
 
                 _player.health -= _enemy.attack;
-                
+
                 _player.attack = Math.round(_player.attack * 1.5);
 
                 $("#playerInfo").html("<ul id='playerInfo'><li>Health: " + _player.health + "</li><li id='playerAttack'>Attack: " + _player.attack + "</li></ul>");
                 $("#enemyInfo").html("<ul id='enemyInfo'><li id='enemyHealth'>Health: " + _enemy.health + "</li><li>Attack: " + _enemy.attack + "</li></ul>");
-                
+
                 if (_enemy.health <= 0) {
-                    _player.victoryCount ++;
+                    _player.victoryCount++;
                     console.log(_player.victoryCount);
                     $("#enemyInfo").remove();
                     $("#playerInfo").remove();
@@ -124,13 +128,30 @@ class game {
                     $("#" + _enemy.id).css('background', 'rgb(51, 2, 2)');
                     $("#" + _enemy.id).off("click");
                     enemyDiv.append(_enemy.imgElement);
-                    if (_player.victoryCount === 3) $("h1").text("You won!!!");
+                    if (_player.victoryCount === 3) {
+                        $("h1").text("You won!!!");
+                        setTimeout(function () {
+                            if (confirm("Play again?")) {
+                                $("#playerDiv").empty();
+                                $("#enemyDiv").empty();
+                                new game();
+                            }
+                        }, 2000);
+
+                    }
                 }
 
                 if (_player.health <= 0) {
                     $("#" + _player.id).css('opacity', '0.5');
                     $("#" + _player.id).css('background', 'rgb(2, 2, 51)');
                     $("h1").text("You lost d[-_-]b");
+                    setTimeout(function () {
+                        if (confirm("Play again?")) {
+                            $("#playerDiv").empty();
+                            $("#enemyDiv").empty();
+                            new game();
+                        }
+                    }, 2000);
                 }
 
             });
