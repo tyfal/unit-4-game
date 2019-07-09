@@ -17,14 +17,27 @@
 img {
     height: 100px;
     width: 100px;
+    margin: 5px;
     background: silver;
     border: 1px solid black;
+}
+
+.player {
+  background: rgb(5, 5, 113);
 }
 
 .enemy {
     background: rgb(113, 5, 5);
 }
 
-.player {
-    background: rgb(5, 5, 113);
+#playerDiv h3 {
+  margin: 5px;
+  font-size: 25px;
+  width: 100%;
 }
+
+ul {
+  margin: 5px;
+  float: left;
+}
+

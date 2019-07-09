@@ -11,6 +11,15 @@ class character {
         this.imgElement = $("<img src='" + img + "' id='" + this.id + "'>");
     }
 
+    // initiates battle when selected
+    enemyClick(player) {
+        var _self = this;
+        this.imgElement.on("click", function (player) {
+            $(this).appendTo("#playerDiv");
+            
+        })
+    }
+
     // attack - increase incrementally with each pass
     attack() {
 
@@ -33,48 +42,6 @@ class character {
 }
 
 
-class battle {
-
-    // constructor - pass players
-    constructor(character1, character2, character3, character4) {
-
-        var playerDiv = $("#playerDiv");
-        var enemyDiv = $("#enemyDiv");
-
-        playerDiv.empty();
-        enemyDiv.empty();
-
-        enemyDiv.append("<p>Decide whom you'll battle first. Be wary...");
-
-        for (var i = 0; i < arguments.length; i++) {
-
-            var char = arguments[i];
-
-            console.log(char.imgElement.attr("class"));
-
-            if (char.imgElement.hasClass("player")) {
-                playerDiv.append(char.imgElement);
-            }
-
-            else {
-                enemyDiv.append(char.imgElement);
-
-            }
-
-        }
-
-
-
-    }
-
-    // battle - for each player set up player/enemy stand off
-
-
-    // victor - determining victor
-
-
-}
-
 class game {
 
     constructor() {
@@ -95,15 +62,84 @@ class game {
             playerDiv.append(char.imgElement);
         }
 
-        $(".character").on("click", function () {
+        var _self = this;
+
+        $(".character").on("click", function (thisGame) {
             $(this).addClass("player");
             for (var i = 0; i < 4; i++) {
                 if (!(cList[i].imgElement.hasClass("player"))) {
                     cList[i].imgElement.addClass("enemy");
                 }
             }
-            new battle(vader, trooper, anakin, rey);
+
+            _self.battle(vader, trooper, anakin, rey);
+
         });
 
     }
+
+    battle(vader, trooper, anakin, rey) {
+
+        var playerDiv = $("#playerDiv");
+        var enemyDiv = $("#enemyDiv");
+
+        playerDiv.empty();
+        enemyDiv.empty();
+
+        enemyDiv.append("<p>Decide whom you'll battle first. Be wary...");
+
+        var enemies = [];
+
+        for (var i = 0; i < arguments.length; i++) {
+
+            var char = arguments[i];
+
+            if (char.imgElement.hasClass("player")) {
+                playerDiv.append(char.imgElement);
+                var player = char;
+            }
+
+            else {
+                enemyDiv.append(char.imgElement);
+                enemies.push(char);
+            }
+
+        }
+
+        for (var i = 0; i<enemies.length; i++) {
+            this.faceoff(player, enemies[i]);
+        }
+
+    }
+
+    faceoff(player, enemy) {
+
+        var _self = this;
+        var _enemy = enemy;
+        var _player = player;
+
+        enemy.imgElement.on("click", function() {
+
+            var playerDiv = $("#playerDiv");
+            var enemyDiv = $("#enemyDiv");
+            var attackBtn = $("<button id='attackBtn'>Attack</button>");
+    
+            playerDiv.prepend("<ul><li>Health: "+_player.health+"</li><li>Attack: "+ _player.attack+"</li></ul>");
+            playerDiv.append("<h3>vs.</h3>",_enemy.imgElement,"<ul><li>Health: "+_enemy.health+"</li><li>Attack: "+_enemy.attack+"</li></ul>",attackBtn);
+
+            // while (enemy.health > 0) {
+
+            //     attackBtn.on("click", function() {
+
+            //         _enemy.health -= _player.attack;
+
+            //     });
+
+            // }         
+
+        });
+
+    }
+
 }
+
