@@ -8,6 +8,10 @@ body {
   background-color: #121213;
 }
 
+#centerHead {
+  padding-top: 50px;
+}
+
 h1 {
   font-size: 60px;
 }
